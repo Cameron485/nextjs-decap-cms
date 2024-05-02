@@ -1,0 +1,270 @@
+backend:
+  name: git-gateway
+  branch: master
+  commit_messages:
+    create: 'Create {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: '[skip ci] Upload “{{path}}”'
+    deleteMedia: '[skip ci] Delete “{{path}}”'
+
+media_folder: static/img
+public_folder: /img
+
+collections:
+  - name: "courses"
+    label: "Courses"
+    folder: "src/pages/courses"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "course"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Course Start Date", name: "startDate", widget: "datetime"}
+      - {label: "Course End Date", name: "endDate", widget: "datetime"}
+      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Instructor", name: "instructor", widget: "relation", collection: "instructors", searchFields: ["name"], valueField: "name", displayFields: "name"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Course", name: "featuredcourse", widget: "boolean", required: false}
+      - {label: "Course Highlights", name: "courseHighlights", widget: "list", required: true, fields: [
+          {label: "Highlight", name: "highlight", widget: "text"}
+        ]}
+      - {label: "Sold Out", name: "soldout", widget: "boolean", required: false}
+      - {label: "Cost", name: "cost", widget: "string"}
+      - {label: "Featured Image", name: "featuredimage", widget: image}
+      - {label: "Additional Images", name: "add", widget: list, fields: [
+          {label: "Image", name: "image", widget: image}
+        ]}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Tags", name: "tags", widget: "list"}
+      - label: "Days"
+        name: "days"
+        widget: "list"
+        fields:
+          - { label: "Day", name: "day", widget: "number"}
+          - { label: "Day Description", name: "dayDescription", widget: "string"}
+  - name: "instructors"
+    label: "Instructors"
+    identifier_field: name
+    folder: "src/pages/instructors"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "instructor"}
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Image", name: "image", widget: image}
+      - {label: "About", name: "about", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "src/pages/index.md"
+        label: "Landing Page"
+        name: "index"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "index-page"}
+          - {label: Title, name: title, widget: string}
+          - {label: "Page Description", name: description, widget: string}
+          - {label: Subheading, name: subheading, widget: string}
+          - {label: Image, name: image, widget: image}
+          - {label: Mainpitch, name: mainpitch, widget: object, fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]}
+          - {label: Sections, name: sections, widget: list, fields:
+              [
+                {label: Image, name: image, widget: image},
+                {label: heading, name: heading, widget: string},
+                {label: Text, name: text, widget: text},
+                {label: "Section Link", name: sectionLink, widget: object, required: false, fields: [
+                  {label: "Link Text", name: linkText, widget: string, required: false},
+                  {label: "Link", name: link, widget: string, required: false},
+                ]},
+              ]}
+      - file: "src/pages/about/index.md"
+        label: "About"
+        name: "about"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "about-page"}
+          - {label: Title, name: title, widget: string}
+          - {label: "Page Description", name: description, widget: string}
+          - {label: Image, name: image, widget: image}
+          - {label: collage, name: collage, widget: list, required: false, fields: [
+              {label: image, name: image, widget: image}
+            ]}
+          - {label: "Courses Collage", name: coursesCollage, widget: list, required: false, fields: [
+              {label: image, name: image, widget: image}
+            ]}
+          - {label: Subheading, name: subheading, widget: string, required: false}
+          - {label: Mainpitch, name: mainpitch, widget: object, fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]}
+          - {label: sections, name: sections, widget: list, fields: [
+              {label: row, name: row, widget: object, fields: [
+                {label: image, name: image, widget: image},
+                {label: Title, name: title, widget: string, required: false},
+                {label: description, name: description, widget: string, required: false},
+                {label: about, name: about, widget: string, required: false}
+              ]}
+            ]}
+          - {label: "First Section", name: firstSection, widget: object, fields: [
+              {label: image, name: image, widget: image},
+              {label: "Text Panel", name: "textPanel", widget: object, fields: [
+                {label: Title, name: title, widget: string, required: false},
+                {label: description, name: description, widget: text, required: false},
+                {label: about, name: about, widget: text, required: false}
+              ]}
+            ]}
+          - {label: "Second Section", name: secondSection, widget: object, fields: [
+              {label: "Image One", name: imageOne, widget: image},
+              {label: "Image Two", name: imageTwo, widget: image},
+              {label: "Image Three", name: imageThree, widget: image},
+              {label: "Text Panel", name: "textPanel", widget: object, fields: [
+                {label: Title, name: title, widget: string, required: false},
+                {label: description, name: description, widget: text, required: false},
+                {label: about, name: about, widget: text, required: false}
+              ]}
+            ]}
+          - {label: "List Heading", name: listHeading, widget: text}
+          - {label: "Styled Lists", name: styledLists, widget: list, required: false, fields:
+              [
+                {label: "Strap Line", name: strapLine, widget: string},
+                {label: "Action", name: action, widget: string},
+                {label: "Items", name: items, widget: list, fields:
+                  [
+                    {label: "item", name: item, widget: string}
+                  ]
+                }
+              ]
+            }
+          - {label: "Blurbs", name: "blurbs", widget: "list", required: false, fields:
+              [
+                {label: Image, name: image, widget: image},
+                {label: Heading, name: heading, widget: string},
+                {label: Text, name: text, widget: text},
+              ]
+            }
+      - file: "src/pages/slow-living/index.md"
+        label: "Slow Living"
+        name: "slow-living"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "slow-living-page"}
+          - {label: Title, name: title, widget: string}
+          - {label: "Page Description", name: description, widget: string}
+          - {label: Image, name: image, widget: image}
+          - {label: collage, name: collage, widget: list, required: false, fields: [
+              {label: image, name: image, widget: image}
+            ]}
+          - {label: Heading, name: heading, widget: string}
+          - {label: Subheading, name: subheading, widget: string}
+          - {label: sections, name: sections, widget: list, fields: [
+              {label: image, name: image, widget: image},
+              {label: Title, name: title, widget: string, required: false},
+              {label: description, name: description, widget: string, required: false},
+              {label: about, name: about, widget: string, required: false},
+              {label: link, name: link, widget: select, required: false, options: ["facebook", "instagram", "courses", "facebook and instagram"]}
+            ]}
+          - {label: "Blurbs", name: "blurbs", widget: "list", fields:
+              [
+                {label: Image, name: image, widget: image},
+                {label: Heading, name: heading, widget: string},
+                {label: Text, name: text, widget: text},
+              ]
+            }
+      - file: "src/pages/contact-new/index.md"
+        label: "Contact New"
+        name: "contact-new"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "your-home-away-page"}
+          - {label: Title, name: title, widget: string}
+          - {label: "Page Description", name: description, widget: string}
+          - {label: Body, name: body, widget: markdown}
+      - file: "src/pages/your-home-away/index.md"
+        label: "Your Home Away"
+        name: "your-home-away"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "your-home-away-page"}
+          - {label: Title, name: title, widget: string}
+          - {label: "Page Description", name: description, widget: string}
+          - {label: Image, name: image, widget: image}
+          - {label: collage, name: collage, widget: list, required: false, fields: [
+              {label: image, name: image, widget: image}
+            ]}
+          - {label: Subheading, name: subheading, widget: string, required: false}
+          - {label: Mainpitch, name: mainpitch, widget: object, required: false, fields: [
+              {label: Title, name: title, widget: string, required: false},
+              {label: Description, name: description, widget: text, required: false}
+              ]
+            }
+          - {label: sections, name: sections, widget: list, fields: [
+              {label: row, name: row, widget: object, fields: [
+                {label: image, name: image, widget: image},
+                {label: "Text Panel", name: "textPanel", widget: object, fields: [
+                  {label: Title, name: title, widget: string, required: false},
+                  {label: description, name: description, widget: text, required: false},
+                  {label: about, name: about, widget: string, required: false}
+                ]}
+              ]}
+            ]}
+          - {label: "Location", name: villaLocation, widget: object, fields: [
+              {label: Title, name: title, widget: string},
+              {label: image, name: image, widget: image},
+              {label: "Points of interest", name: pointsOfInterest, widget: list, fields: [
+                {label: distance, name: distance, widget: string},
+              ]},
+              {label: "Airports", name: airports, widget: list, fields: [
+                {label: distance, name: distance, widget: string},
+              ]},
+            ]}
+          - {label: "House Rules", name: houseRules, widget: object, required: false, fields: [
+              {label: image, name: image, widget: image},
+              {label: "rules", name: rules, widget: list, required: false, fields: [
+                {label: rule, name: rule, widget: string},
+              ]},
+              {label: "Cancellations", name: cancellations, widget: list, required: false, fields: [
+                {label: cancellation, name: cancellation, widget: string},
+              ]},
+            ]}
+          - {label: "Property Details", name: propertyDetails, widget: object, fields: [
+              {label: Title, name: title, widget: string},
+              {label: image, name: image, widget: image},
+              {label: "Main House", name: mainHouse, widget: list, fields: [
+                {label: "Room Description", name: roomDescription, widget: string},
+              ]},
+              {label: "Garden Room", name: gardenRoom, widget: list, fields: [
+                {label: "Room Description", name: roomDescription, widget: string},
+                {label: "Other Info", name: otherInfo, widget: string},
+              ]},
+              {label: "Guest House", name: guestHouse, widget: list, fields: [
+                {label: "Room Description", name: roomDescription, widget: string},
+              ]},
+            ]}
+          - {label: "Features & Amenities", name: featuresAndAmenities, widget: object, required: false, fields: [
+              {label: "Title", name: title, widget: string},
+              {label: image, name: image, widget: image},
+              {label: "Feature / Amenity List", name: featureAmenityList, widget: list, fields: [
+                {label: "Feature or Amenity", name: featureAmenity, widget: string}
+              ]},
+            ]}
+          - {label: "Outdoor Features", name: outdoorFeatures, widget: object, fields: [
+              {label: "Title", name: title, widget: string},
+              {label: image, name: image, widget: image},
+              {label: "Outdoor Features List", name: outdoorFeatureList, widget: list, fields: [
+                {label: "Outdoor Feature", name: outdoorFeature, widget: string}
+              ]},
+            ]}
+          - {label: "Styled Lists", name: styledLists, widget: list, required: false, fields:
+              [
+                {label: "Strap Line", name: strapLine, widget: string},
+                {label: "Action", name: action, widget: string},
+                {label: "Items", name: items, widget: list, fields:
+                  [
+                    {label: "item", name: item, widget: string}
+                  ]
+                }
+              ]
+            }
+          - {label: "Blurbs", name: "blurbs", widget: "list", required: false, fields:
+              [
+                {label: Image, name: image, widget: image},
+                {label: Heading, name: heading, widget: string},
+                {label: Text, name: text, widget: text},
+              ]
+            }
